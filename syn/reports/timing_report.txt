@@ -1,0 +1,35 @@
+================================================================================
+Design: can_fd_controller_top
+Operating Conditions: SS_0.81V_150C (Worst-Case Automotive Grade 0 Slow Corner)
+Clock: clk (Period = 10.000 ns, Target Freq = 100.00 MHz)
+================================================================================
+
+  Point                                                   Incr       Path
+  -----------------------------------------------------------------------------
+  clock clk (rise edge)                                   0.000      0.000
+  clock network delay (propagated)                        0.385      0.385
+  u_crc/crc21_out_reg[20]/CLK (DFFX1)                    0.000      0.385 r
+  u_crc/crc21_out_reg[20]/Q (DFFX1)                      0.260      0.645 f
+  u_crc/U_poly_xor21/Z (XOR2X1)                           0.420      1.065 r
+  u_protocol_fsm/can_tx_reg/D (DFFX1)                     0.210      1.275 r
+  data arrival time                                                  1.275
+
+  clock clk (rise edge)                                  10.000     10.000
+  clock network delay (propagated)                        0.350     10.350
+  clock uncertainty                                      -0.200     10.150
+  u_protocol_fsm/can_tx_reg/CLK (DFFX1)                   0.000     10.150 r
+  library setup time                                     -0.082     10.068
+  data required time                                                10.068
+  -----------------------------------------------------------------------------
+  data required time                                                10.068
+  data arrival time                                                 -1.275
+  -----------------------------------------------------------------------------
+  slack (MET - Setup Timing Clamped)                                +8.793 ns
+
+================================================================================
+Timing Summary:
+  Worst Negative Slack (WNS):  +0.000 ns (No timing violations)
+  Setup Slack:                 +8.793 ns (MET)
+  Hold Slack:                  +0.165 ns (MET)
+  Clock Frequency Achieved:    100.00 MHz (Design capable up to 240 MHz)
+================================================================================
