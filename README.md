@@ -63,16 +63,15 @@ Host Interface <-----> +--------------------+    |            +-----------------
 | Parameter | Specification |
 |:---|:---|
 | Standard Compliance | ISO 11898-1:2015 & Classical CAN 2.0B |
-| Process Technology | 65nm Automotive CMOS Standard Cell (-40C to 150C AEC-Q100 Grade 0) |
-| Core Clock Frequency | 100.00 MHz (Timing closure verified up to 240 MHz) |
+| Process Technology | SkyWater 130nm (`sky130_fd_sc_hd` / 5-metal GDSII deck) |
+| Core Clock Frequency (SDC) | 100.00 MHz (`syn/` SDC target; external OpenSTA required for slack) |
 | Nominal Bit Rate | 125 kbps to 1.0 Mbps |
 | Data Bit Rate | Up to 8.0 Mbps with Bit Rate Switching (BRS) |
 | Maximum Payload Size | 64 Bytes per frame (DLC = 15) |
 | Cyclic Redundancy Checks | CRC-15, CRC-17, CRC-21 with Stuff Count |
 | Transceiver Delay Compensation | Hardware loop delay counter with programmable SSP offset |
-| Silicon Core Area | 102,528 um^2 (0.1025 mm^2) |
-| Total Die Dimensions | 1350 um x 1350 um (1.82 mm^2) |
-| Physical Layout Standard | Binary GDSII Stream Format (Stream Version 7) |
+| GDSII Die Footprint | 360.00 um x 360.00 um (0 geometric DRC violations) |
+| Physical Verification | `layout/scripts/verify_gds_drc.py` (0 geometric DRC violations) |
 
 ---
 
@@ -104,15 +103,40 @@ Waveforms are output to `sim/waves/tb_can_fd_controller.vcd` for cycle-accurate 
 
 ---
 
-## Static Timing Analysis & Synthesis
+## RTL Synthesis Readiness & SDC Audit
 
-Static Timing Analysis (STA) was executed under worst-case slow automotive process corner conditions (SS, 0.81V, 150C AEC-Q100 Grade 0):
+Static Verilog-2005 structural parsing and SDC constraint inspection were executed via `syn/analyze_rtl.py` (external Yosys/OpenSTA required for foundry gate counts and post-synthesis slack):
 
-- Clock Constraint: 10.000 ns (100.00 MHz)
-- Worst Data Arrival Time: 1.275 ns
-- Maximum Operating Frequency: 240.0 MHz
+```text
+================================================================================
+RTL SYNTHESIS READINESS & CONSTRAINT REPORT: can-fd-automotive-controller
+Method : Static Verilog/SV Structural Parser + SDC Constraint Audit
+Note   : Foundry Gate-Level Netlist & STA require PDK Liberty (.lib) + Synopsys/OpenROAD
+================================================================================
+RTL Source Files Inspected : 8
+Code Lines (Non-Comment)   : 821
+Sequential Blocks          : 9
+Combinational Blocks       : 2
+Declared reg/logic Signals : 48
 
-Detailed timing and area reports are provided in `syn/reports/timing_report.txt` and `syn/reports/area_report.txt`.
+MODULE BREAKDOWN:
+  rtl\bit_timing\can_bit_timing.v               | modules=can_bit_timing               | loc= 107 | seq= 3 | comb= 0
+  rtl\can_fd_controller_top.v                   | modules=can_fd_controller_top        | loc= 184 | seq= 0 | comb= 0
+  rtl\crc\can_crc_engine.v                      | modules=can_crc_engine               | loc=  73 | seq= 1 | comb= 1
+  rtl\fault\can_fault_confinement.v             | modules=can_fault_confinement        | loc=  59 | seq= 1 | comb= 0
+  rtl\fifo\can_fifo_buffer.v                    | modules=can_fifo_buffer              | loc=  85 | seq= 1 | comb= 0
+  rtl\filter\can_acceptance_filter.v            | modules=can_acceptance_filter        | loc=  43 | seq= 1 | comb= 0
+  rtl\protocol\can_fd_fsm.v                     | modules=can_fd_fsm                   | loc= 210 | seq= 1 | comb= 1
+  rtl\tdc\can_tdc_engine.v                      | modules=can_tdc_engine               | loc=  60 | seq= 1 | comb= 0
+
+SDC CLOCK CONSTRAINTS:
+  can_fd_timing.sdc: port=clk | period=10.00 ns | target=100.00 MHz
+
+ARITHMETIC DIVISION/MODULO CHECK: CLEAN (0 combinational / or % operators)
+================================================================================
+```
+
+Detailed constraint and structural audit logs are stored in `syn/reports/timing_report.txt` and `syn/reports/area_report.txt`.
 
 ---
 
@@ -121,8 +145,8 @@ Detailed timing and area reports are provided in `syn/reports/timing_report.txt`
 The ASIC layout was synthesized and streamed to industry-standard GDSII format:
 - Layout File: `layout/gds/can_fd_controller_top.gds`
 - Generator Script: `layout/scripts/build_layout_can_fd.py`
-- DRC Report: `layout/reports/drc_report.txt` (0 errors, 100% clean)
-- LVS Report: `layout/reports/lvs_report.txt` (100% netlist to layout match)
+- DRC Report: `layout/reports/drc_report.txt` (0 geometric DRC violations via `verify_gds_drc.py`)
+- LVS Report: `layout/reports/lvs_report.txt` (GDSII geometry + top-level port audit; external Magic/Netgen required for SPICE LVS)
 
 ---
 
