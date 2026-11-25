@@ -1,37 +1,8 @@
 ================================================================================
-CALIBRE LVS REPORT - DESIGN: can_fd_controller_top
-Schematic Source: syn/netlist/can_fd_controller_top_netlist.v
-Layout Source:    layout/gds/can_fd_controller_top.gds
-Rule Deck:        lvs_rules_65nm_automotive_rev2.5.rul
-Execution Date:   2026-11-22 15:48:45
+PHYSICAL GEOMETRY & TOP-LEVEL PORT AUDIT: can_fd_controller_top
+Process Node: SkyWater 130nm (DB Unit: 1 nm)
+Layout File:  layout/gds/can_fd_controller_top.gds
 ================================================================================
 
-OVERALL COMPARISON RESULT:
-  # LVS STATUS: NETLIST MATCHES LAYOUT (100% CLEAN - CORRECT) #
-
-ELEMENT COMPARISON STATISTICS:
---------------------------------------------------------------------------------
-ELEMENT TYPE                  LAYOUT COUNT          SCHEMATIC COUNT       STATUS
---------------------------------------------------------------------------------
-N-Channel MOSFETs (nmos)            142,400                 142,400        MATCH
-P-Channel MOSFETs (pmos)            142,400                 142,400        MATCH
-Logic Inverters                      21,300                  21,300        MATCH
-NAND / NOR Logic Gates               36,400                  36,400        MATCH
-Multiplexers (MUX2X1)                 8,500                   8,500        MATCH
-D-Type Flip-Flops (DFF)               5,000                   5,000        MATCH
-I/O Wirebond Pads                        44                      44        MATCH
---------------------------------------------------------------------------------
-TOTAL NETS:                          61,400                  61,400        MATCH
-TOTAL INSTANCES:                     71,200                  71,200        MATCH
-
-DISCREPANCY SUMMARY:
-  Unmatched Layout Instances:    0
-  Unmatched Schematic Instances: 0
-  Unmatched Layout Nets:         0
-  Unmatched Schematic Nets:      0
-  Port Matching Errors:          0
-  Property Errors:               0
-
-FINAL LVS VERDICT:
-  LAYOUT AND SOURCE ARE EQUIVALENT.
-================================================================================
+GDSII Geometry Check (verify_gds_drc.py): 0 geometric DRC violations (verified polygons)
+Note: External Magic/Netgen required for transistor-level SPICE extraction & LVS.

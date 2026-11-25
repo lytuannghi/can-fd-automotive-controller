@@ -251,13 +251,22 @@ module tb_can_fd_controller;
         // -------------------------------------------------------------
         // Test 2: Dual Bit-Rate Timing Prescaler & Sample Point Generation
         // -------------------------------------------------------------
-        @(posedge clk);
-        if (u_dut.u_bit_timing.tq_tick !== 1'bx) begin
-            $display("[PASS] Test 2: Dual bit-rate prescaler active and generating Tq timing ticks.");
-            tests_passed = tests_passed + 1;
-        end else begin
-            $display("[FAIL] Test 2: Bit timing engine inactive.");
-            tests_failed = tests_failed + 1;
+        begin : check_bit_timing
+            integer cyc, sp_cnt, bs_cnt;
+            sp_cnt = 0;
+            bs_cnt = 0;
+            for (cyc = 0; cyc < 50; cyc = cyc + 1) begin
+                @(posedge clk);
+                if (u_dut.u_bit_timing.sample_point) sp_cnt = sp_cnt + 1;
+                if (u_dut.u_bit_timing.bit_start)    bs_cnt = bs_cnt + 1;
+            end
+            if (sp_cnt >= 2 && bs_cnt >= 2) begin
+                $display("[PASS] Test 2: Dual bit-rate timing generated %0d sample_point and %0d bit_start pulses.", sp_cnt, bs_cnt);
+                tests_passed = tests_passed + 1;
+            end else begin
+                $display("[FAIL] Test 2: Bit timing failed (sp_cnt=%0d, bs_cnt=%0d).", sp_cnt, bs_cnt);
+                tests_failed = tests_failed + 1;
+            end
         end
 
         // -------------------------------------------------------------
@@ -400,16 +409,18 @@ module tb_can_fd_controller;
         begin : wait_tx_done
             integer timeout;
             timeout = 0;
-            while (!tx_done && timeout < 2000) begin
+            while (!tx_done && timeout < 8000) begin
                 @(posedge clk);
                 timeout = timeout + 1;
             end
+            // Allow 1 clock edge for synchronous u_rx_fifo push on tx_success pulse
+            @(posedge clk); #1;
 
-            if (tx_done || u_dut.u_protocol_fsm.state != 4'd0) begin
-                $display("[PASS] Test 10: Full-flow 64-byte CAN-FD frame transmitted with BRS and CRC-21.");
+            if (rx_fifo_not_empty && rx_fifo_id == 29'h123 && rx_fifo_payload == host_tx_payload) begin
+                $display("[PASS] Test 10: Full-flow 64-byte CAN-FD frame TX & loopback RX FIFO verified in %0d cycles (ID=0x%03X).", timeout, rx_fifo_id);
                 tests_passed = tests_passed + 1;
             end else begin
-                $display("[FAIL] Test 10: CAN-FD transmission timed out.");
+                $display("[FAIL] Test 10: CAN-FD transmission/loopback incomplete (tx_done=%0b, fifo=%0b, timeout=%0d).", tx_done, rx_fifo_not_empty, timeout);
                 tests_failed = tests_failed + 1;
             end
         end

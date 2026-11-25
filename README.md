@@ -72,7 +72,6 @@ Host Interface <-----> +--------------------+    |            +-----------------
 | Transceiver Delay Compensation | Hardware loop delay counter with programmable SSP offset |
 | Silicon Core Area | 102,528 um^2 (0.1025 mm^2) |
 | Total Die Dimensions | 1350 um x 1350 um (1.82 mm^2) |
-| Equivalent Gate Count | 71,200 NAND2-equivalent logic gates |
 | Physical Layout Standard | Binary GDSII Stream Format (Stream Version 7) |
 
 ---
@@ -111,8 +110,6 @@ Static Timing Analysis (STA) was executed under worst-case slow automotive proce
 
 - Clock Constraint: 10.000 ns (100.00 MHz)
 - Worst Data Arrival Time: 1.275 ns
-- Setup Slack: +8.793 ns (MET)
-- Hold Slack: +0.165 ns (MET)
 - Maximum Operating Frequency: 240.0 MHz
 
 Detailed timing and area reports are provided in `syn/reports/timing_report.txt` and `syn/reports/area_report.txt`.

@@ -1,21 +1,32 @@
 ================================================================================
-Design: can_fd_controller_top
-Library: automotive_standard_cell_library_65nm
-Units: Area in um^2, Gate Count in NAND2 Equivalents (1 NAND2 = 1.44 um^2)
+RTL STRUCTURAL & SYNTHESIS READINESS SUMMARY: can_fd_controller_top
+Target Library Constraints: SkyWater 130nm HD Standard Cells (SDC)
 ================================================================================
 
-Hierarchy                               Combinational  Sequential   Total Area  Gate Count
-------------------------------------------------------------------------------------------
-can_fd_controller_top                         54,200      48,328      102,528      71,200
-  u_bit_timing (can_bit_timing)                4,800       3,600        8,400       5,833
-  u_crc (can_crc_engine)                       8,900       6,200       15,100      10,486
-  u_tdc (can_tdc_engine)                       3,200       2,800        6,000       4,167
-  u_fault (can_fault_confinement)              3,400       3,100        6,500       4,514
-  u_filter (can_acceptance_filter)             5,100       3,400        8,500       5,903
-  u_rx_fifo (can_fifo_buffer)                 18,400      21,228       39,628      27,519
-  u_protocol_fsm (can_fd_fsm)                 10,400       8,000       18,400      12,778
-------------------------------------------------------------------------------------------
-Total Chip Core Silicon Area: 102,528 um^2 (0.1025 mm^2)
-Equivalent Gate Count: 71,200 NAND2-equivalent logic gates
-Macro / Memory Instances: 0 (Pure Standard Cell Synthesizable ASIC RTL)
 ================================================================================
+RTL SYNTHESIS READINESS & CONSTRAINT REPORT: can-fd-automotive-controller
+Method : Static Verilog/SV Structural Parser + SDC Constraint Audit
+Note   : Foundry Gate-Level Netlist & STA require PDK Liberty (.lib) + Synopsys/OpenROAD
+================================================================================
+RTL Source Files Inspected : 8
+Code Lines (Non-Comment)   : 821
+Sequential Blocks          : 9
+Combinational Blocks       : 2
+Declared reg/logic Signals : 48
+
+MODULE BREAKDOWN:
+  rtl\bit_timing\can_bit_timing.v               | modules=can_bit_timing               | loc= 107 | seq= 3 | comb= 0
+  rtl\can_fd_controller_top.v                   | modules=can_fd_controller_top        | loc= 184 | seq= 0 | comb= 0
+  rtl\crc\can_crc_engine.v                      | modules=can_crc_engine               | loc=  73 | seq= 1 | comb= 1
+  rtl\fault\can_fault_confinement.v             | modules=can_fault_confinement        | loc=  59 | seq= 1 | comb= 0
+  rtl\fifo\can_fifo_buffer.v                    | modules=can_fifo_buffer              | loc=  85 | seq= 1 | comb= 0
+  rtl\filter\can_acceptance_filter.v            | modules=can_acceptance_filter        | loc=  43 | seq= 1 | comb= 0
+  rtl\protocol\can_fd_fsm.v                     | modules=can_fd_fsm                   | loc= 210 | seq= 1 | comb= 1
+  rtl\tdc\can_tdc_engine.v                      | modules=can_tdc_engine               | loc=  60 | seq= 1 | comb= 0
+
+SDC CLOCK CONSTRAINTS:
+  can_fd_timing.sdc: port=clk | period=10.00 ns | target=100.00 MHz
+
+ARITHMETIC DIVISION/MODULO CHECK: CLEAN (0 combinational / or % operators)
+================================================================================
+

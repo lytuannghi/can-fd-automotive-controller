@@ -1,7 +1,7 @@
 # ==============================================================================
 # Synopsys Design Constraints (SDC)
 # Target: ISO 11898-1:2015 CAN-FD Automotive Controller ASIC Core
-# Process Technology: TSMC 65nm LP / SkyWater 130nm Automotive Grade Standard Cells
+# Process Technology: SkyWater 130nm HD Standard Cell Library (1.80V, 25C)
 # Operating Conditions: Fast-Fast (0.99V, -40C) / Slow-Slow (0.81V, 150C AEC-Q100 Grade 0)
 # Target Frequency: 100.00 MHz (Clock Period = 10.000 ns)
 # ==============================================================================

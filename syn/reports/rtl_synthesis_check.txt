@@ -1,0 +1,26 @@
+================================================================================
+RTL SYNTHESIS READINESS & CONSTRAINT REPORT: can-fd-automotive-controller
+Method : Static Verilog/SV Structural Parser + SDC Constraint Audit
+Note   : Foundry Gate-Level Netlist & STA require PDK Liberty (.lib) + Synopsys/OpenROAD
+================================================================================
+RTL Source Files Inspected : 8
+Code Lines (Non-Comment)   : 821
+Sequential Blocks          : 9
+Combinational Blocks       : 2
+Declared reg/logic Signals : 48
+
+MODULE BREAKDOWN:
+  rtl\bit_timing\can_bit_timing.v               | modules=can_bit_timing               | loc= 107 | seq= 3 | comb= 0
+  rtl\can_fd_controller_top.v                   | modules=can_fd_controller_top        | loc= 184 | seq= 0 | comb= 0
+  rtl\crc\can_crc_engine.v                      | modules=can_crc_engine               | loc=  73 | seq= 1 | comb= 1
+  rtl\fault\can_fault_confinement.v             | modules=can_fault_confinement        | loc=  59 | seq= 1 | comb= 0
+  rtl\fifo\can_fifo_buffer.v                    | modules=can_fifo_buffer              | loc=  85 | seq= 1 | comb= 0
+  rtl\filter\can_acceptance_filter.v            | modules=can_acceptance_filter        | loc=  43 | seq= 1 | comb= 0
+  rtl\protocol\can_fd_fsm.v                     | modules=can_fd_fsm                   | loc= 210 | seq= 1 | comb= 1
+  rtl\tdc\can_tdc_engine.v                      | modules=can_tdc_engine               | loc=  60 | seq= 1 | comb= 0
+
+SDC CLOCK CONSTRAINTS:
+  can_fd_timing.sdc: port=clk | period=10.00 ns | target=100.00 MHz
+
+ARITHMETIC DIVISION/MODULO CHECK: CLEAN (0 combinational / or % operators)
+================================================================================
